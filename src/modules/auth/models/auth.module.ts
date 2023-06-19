@@ -4,10 +4,17 @@ import { AuthController } from '../controllers/auth.controller';
 import { AuthService } from '../services/auth.service';
 import { GoogleStrategy } from '../strategies/google.strategy';
 import { User, UserSchema } from 'src/modules/user/schemas/user.schema';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from '../constants/jwtConstants';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy],
