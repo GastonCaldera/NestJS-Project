@@ -14,6 +14,13 @@ export class AuthController {
       password: body.password,
     });
   }
+  @Post('signup')
+  signUp(@Body() body: SignInDto) {
+    return this.authService.signUp({
+      email: body.email,
+      password: body.password,
+    });
+  }
 
   @Get('google')
   @UseGuards(AuthGuard('google'))

@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth.service';
 import { GoogleStrategy } from '../strategies/google.strategy';
 import { User, UserSchema } from 'src/modules/user/schemas/user.schema';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from '../constants/jwtConstants';
+import { jwtConstants } from '../constants/jwt.const';
 
 @Module({
   imports: [
