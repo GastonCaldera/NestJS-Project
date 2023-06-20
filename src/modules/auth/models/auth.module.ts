@@ -6,14 +6,13 @@ import { GoogleStrategy } from '../strategies/google.strategy';
 import { User, UserSchema } from 'src/modules/user/schemas/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../constants/jwt.const';
-
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: 3600 },
     }),
   ],
   controllers: [AuthController],

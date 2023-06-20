@@ -27,7 +27,7 @@ export class AuthService {
           data: '',
         };
       }
-      const payload = { sub: checkUser[0]._id, email: checkUser[0].email };
+      const payload = { _id: checkUser[0]._id, email: checkUser[0].email };
       return {
         status: 'OK',
         message: 'SingIn correctly',
@@ -59,7 +59,7 @@ export class AuthService {
       const hash = await bcrypt.hash(password, saltOrRounds);
       const createdUser = new this.userModel({ email, password: hash });
       createdUser.save();
-      const payload = { sub: createdUser._id, email: createdUser.email };
+      const payload = { _id: createdUser._id, email: createdUser.email };
       return {
         status: 'OK',
         message: 'SingUp correctly',
@@ -85,7 +85,7 @@ export class AuthService {
         .find({ email: req.user.email })
         .exec();
       if (checkUser.length > 0) {
-        const payload = { sub: checkUser[0]._id, email: checkUser[0].email };
+        const payload = { _id: checkUser[0]._id, email: checkUser[0].email };
         return {
           status: 'OK',
           message: 'User Info from Google',
@@ -98,7 +98,7 @@ export class AuthService {
       } else {
         const createdUser = new this.userModel({ email: req.user.email });
         createdUser.save();
-        const payload = { sub: createdUser._id, email: createdUser.email };
+        const payload = { _id: createdUser._id, email: createdUser.email };
         return {
           status: 'OK',
           message: 'User Info from Google',
