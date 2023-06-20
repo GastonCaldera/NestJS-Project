@@ -6,12 +6,15 @@ import {
   Length,
 } from 'class-validator';
 import { PASSWORD_REGEX } from '../constants/regex.const.ts';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class SignInDto {
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   public email: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   @Length(8, 30)
