@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { UserDto } from 'src/modules/user/dtos/user.dto';
 import { File } from '../schemas/file.schema';
 import { DownloadFilesBodyDto } from '../dtos/download.body.dto';
+import { UpdateFileBodyDto } from '../dtos/update.body.dto';
 @Injectable()
 export class FileService {
   constructor(
@@ -66,7 +67,24 @@ export class FileService {
       };
     }
   }
-  async downloadFiles(user: UserDto, { _id, key }: DownloadFilesBodyDto) {
+  async updateFile({ _id, fileName }: UpdateFileBodyDto) {
+    const findFile: File | null = await this.fileModel
+      .findByIdAndUpdate({ _id }, { fileName })
+      .exec();
+    if (!findFile) {
+      return {
+        status: 'ERROR',
+        message: 'File not found',
+        data: '',
+      };
+    }
+    return {
+      status: 'OK',
+      message: 'File updated successfully',
+      data: '',
+    };
+  }
+  async downloadFiles({ _id, key }: DownloadFilesBodyDto) {
     try {
       const findFile: File | null = await this.fileModel
         .findOne({ _id, key })
@@ -87,7 +105,7 @@ export class FileService {
         .createReadStream();
       return {
         status: 'OK',
-        message: 'File found successfully',
+        fileName: findFile.fileName,
         data: new StreamableFile(streamFile),
       };
     } catch (error) {
