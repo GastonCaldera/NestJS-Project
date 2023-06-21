@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -6,7 +6,7 @@ import { S3 } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import { UserDto } from 'src/modules/user/dtos/user.dto';
 import { File } from '../schemas/file.schema';
-
+import { DownloadFilesBodyDto } from '../dtos/download.body.dto';
 @Injectable()
 export class FileService {
   constructor(
@@ -49,13 +49,46 @@ export class FileService {
   }
   async getFiles(user: UserDto) {
     try {
-      const findUser: File[] = await this.fileModel
+      const findFile: File[] = await this.fileModel
         .find({ userId: user._id })
         .exec();
       return {
         status: 'OK',
         message: 'Files found successfully',
-        data: findUser,
+        data: findFile,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 'ERROR',
+        message: 'Internal server error',
+        data: '',
+      };
+    }
+  }
+  async downloadFiles(user: UserDto, { _id, key }: DownloadFilesBodyDto) {
+    try {
+      const findFile: File | null = await this.fileModel
+        .findOne({ _id, key })
+        .exec();
+      if (findFile === null) {
+        return {
+          status: 'ERROR',
+          message: 'File not found',
+          data: '',
+        };
+      }
+      const s3 = new S3();
+      const streamFile = await s3
+        .getObject({
+          Bucket: this.configService.get('AWS_BUCKET_NAME') || '',
+          Key: key,
+        })
+        .createReadStream();
+      return {
+        status: 'OK',
+        message: 'File found successfully',
+        data: new StreamableFile(streamFile),
       };
     } catch (error) {
       console.log(error);
