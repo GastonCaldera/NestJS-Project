@@ -4,6 +4,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
 import { FileModule } from './modules/file/file.module';
+import { SearchModule } from './modules/search/search.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FileModule } from './modules/file/file.module';
     MongooseModule.forRoot(`${process.env.MONGODB_DATABASE_HOST}`),
     UserModule,
     FileModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],
