@@ -8,6 +8,7 @@ import { UserDto } from 'src/modules/user/dtos/user.dto';
 import { File } from '../schemas/file.schema';
 import { DownloadFilesBodyDto } from '../dtos/download.body.dto';
 import { UpdateFileBodyDto } from '../dtos/update.body.dto';
+
 @Injectable()
 export class FileService {
   constructor(
