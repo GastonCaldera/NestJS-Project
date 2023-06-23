@@ -1,6 +1,6 @@
 # NestJS Project
 
-Effortlessly upload files from local directories or URLs with seamless progress and enhanced security. Simplify your file transfer process with ease and convenience.
+Effortlessly upload files from local directories or URLs with seamless progress and enhanced security. Simplify your file transfer process with ease and convenience. for the project documentation you can go to api/docs.
 
 ## Installation
 Installation is quick and easy, you just need to run the following commands and add the environment variables
